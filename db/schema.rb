@@ -11,22 +11,22 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2026_10_10_093506) do
-  create_table "events", force: :cascade do |t|
+  create_table "events", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.string "location"
     t.datetime "starts_at"
     t.string "category"
-    t.decimal "price"
+    t.decimal "price", precision: 10
     t.string "image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
-  create_table "sessions", force: :cascade do |t|
-    t.integer "user_id", null: false
+  create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
     t.string "ip_address"
     t.string "user_agent"
     t.datetime "created_at", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_10_093506) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
     t.datetime "created_at", null: false

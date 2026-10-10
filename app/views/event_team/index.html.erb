@@ -1,0 +1,36 @@
+<% content_for :title, "Manage team — #{@event.name}" %>
+
+<div class="max-w-2xl mx-auto px-4 sm:px-6 py-10">
+  <%= link_to "← Back to event", @event, class: "text-sm text-gray-500 hover:text-gray-900" %>
+
+  <h1 class="mt-4 text-2xl font-bold text-gray-900">Manage team</h1>
+  <p class="mt-1 text-sm text-gray-500"><%= @event.name %></p>
+
+  <div class="mt-6 rounded-xl border border-gray-200 bg-white divide-y divide-gray-100">
+    <% @user_events.each do |user_event| %>
+      <div class="flex items-center justify-between px-4 py-3">
+        <div>
+          <p class="font-medium text-gray-900"><%= user_event.user.name %></p>
+          <p class="text-xs text-gray-400"><%= user_event.user.email %></p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-semibold uppercase tracking-wide px-2 py-1 rounded-full <%= user_event.organizer? ? 'bg-orange-50 text-orange-600' : 'bg-gray-100 text-gray-500' %>">
+            <%= user_event.role %>
+          </span>
+          <%= button_to "Remove", event_team_member_path(@event, user_event), method: :delete, class: "text-sm text-red-500 hover:text-red-700 bg-transparent border-0 p-0 cursor-pointer", form: { data: { turbo_confirm: "Remove #{user_event.user.name} from this event's team?" } } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-8 rounded-xl border border-gray-200 bg-white p-5">
+    <h2 class="font-semibold text-gray-900 mb-3">Add a team member</h2>
+    <p class="text-sm text-gray-500 mb-4">They need an existing account — enter the email they signed up with.</p>
+
+    <%= form_with url: event_team_members_path(@event), class: "flex flex-col sm:flex-row gap-3" do |form| %>
+      <%= form.email_field :email, required: true, placeholder: "teammate@example.com", class: "flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+      <%= form.select :role, [["Volunteer", "volunteer"], ["Organizer", "organizer"]], {}, class: "rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+      <%= form.submit "Add", class: "rounded-lg bg-orange-600 text-white font-semibold px-5 py-2 text-sm hover:bg-orange-700 cursor-pointer" %>
+    <% end %>
+  </div>
+</div>

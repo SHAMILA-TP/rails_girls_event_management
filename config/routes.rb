@@ -10,7 +10,11 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  resources :events
+  resources :events do
+    resources :team_members, only: %i[index create destroy], controller: "event_team"
+  end
+
+  get "my/events", to: "my_events#index", as: :my_events
 
   # Defines the root path route ("/")
   root "events#index"

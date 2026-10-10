@@ -8,4 +8,12 @@ class User < ApplicationRecord
   has_many :events, through: :user_events
 
   validates :name, presence: true
+
+  def organized_events
+    events.where(user_events: { role: "organizer" })
+  end
+
+  def volunteered_events
+    events.where(user_events: { role: "volunteer" })
+  end
 end

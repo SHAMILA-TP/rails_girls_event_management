@@ -1,9 +1,18 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_event, only: %i[show edit update destroy]
+  before_action :require_organizer!, only: %i[edit update destroy]
 
   def index
-    @events = Event.order(:started_at)
+    @events = Event.all
+    @events = @events.upcoming unless params[:show_past] == "1"
+    @events = @events.category(params[:category])
+    @events = @events.free if params[:price] == "free"
+    @events = @events.paid if params[:price] == "paid"
+    @events = @events.search(params[:q])
+    @events = @events.order(:started_at)
+
+    @categories = Event.distinct.where.not(category: [nil, ""]).order(:category).pluck(:category)
   end
 
   def show
@@ -17,7 +26,7 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
 
     if @event.save
-      @event.user_events.create!(user: current_user, is_organizer: "true")
+      @event.user_events.create!(user: current_user, role: "organizer")
       redirect_to @event, notice: "Event created."
     else
       render :new, status: :unprocessable_entity
@@ -47,5 +56,11 @@ class EventsController < ApplicationController
 
     def event_params
       params.expect(event: [:name, :description, :location, :started_at, :ended_at, :category, :price, :image_url])
+    end
+
+    def require_organizer!
+      return if @event.organized_by?(current_user)
+
+      redirect_to @event, alert: "Only this event's organizers can do that."
     end
 end

@@ -10,10 +10,10 @@ organizer = User.create!(
   password_confirmation: "password123"
 )
 
-User.create!(
-  name: "Alex Attendee",
+volunteer = User.create!(
+  name: "Alex Volunteer",
   phone: "+1 555 010 5678",
-  email: "attendee@example.com",
+  email: "volunteer@example.com",
   password: "password123",
   password_confirmation: "password123"
 )
@@ -83,8 +83,11 @@ events = [
 
 events.each do |attrs|
   event = Event.create!(attrs)
-  UserEvent.create!(user: organizer, event: event, is_organizer: "true")
+  UserEvent.create!(user: organizer, event: event, role: "organizer")
 end
 
+# Volunteer helps out with the first event, as a demo of multiple team members per event.
+UserEvent.create!(user: volunteer, event: Event.first, role: "volunteer")
+
 puts "Seeded #{User.count} users and #{Event.count} events."
-puts "Log in as organizer@example.com / password123 or attendee@example.com / password123."
+puts "Log in as organizer@example.com / password123 (organizer) or volunteer@example.com / password123 (volunteer)."

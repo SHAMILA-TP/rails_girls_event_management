@@ -34,6 +34,7 @@
           <%= link_to "Browse events", events_path, class: "hover:text-gray-900" %>
 
           <% if user_signed_in? %>
+            <%= link_to "My events", my_events_path, class: "hover:text-gray-900" %>
             <%= link_to "Create event", new_event_path, class: "rounded-full bg-orange-600 text-white px-4 py-2 hover:bg-orange-700" %>
             <%= link_to current_user.name, edit_user_registration_path, class: "text-gray-400 hidden sm:inline hover:text-gray-900" %>
             <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "bg-transparent border-0 p-0 text-gray-600 hover:text-gray-900 cursor-pointer font-medium" %>

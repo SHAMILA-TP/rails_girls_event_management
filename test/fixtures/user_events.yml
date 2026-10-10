@@ -4,8 +4,10 @@ one:
   user: one
   event: one
   is_organizer: "true"
+  role: organizer
 
 two:
   user: two
   event: two
   is_organizer: "false"
+  role: volunteer

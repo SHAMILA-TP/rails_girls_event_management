@@ -1,0 +1,37 @@
+<% content_for :title, "eventa — Find your next event" %>
+
+<section class="bg-gradient-to-br from-orange-500 to-pink-600 text-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 text-center">
+    <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Discover events you'll love</h1>
+    <p class="mt-4 text-lg text-orange-50 max-w-xl mx-auto">
+      Workshops, concerts, meetups, and more — find something happening near you.
+    </p>
+  </div>
+</section>
+
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+  <h2 class="text-xl font-bold mb-6">Upcoming events</h2>
+
+  <% if @events.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @events.each do |event| %>
+        <%= link_to event_path(event), class: "group block rounded-xl overflow-hidden border border-gray-200 bg-white hover:shadow-lg transition-shadow" do %>
+          <div class="aspect-[16/9] bg-gray-100 overflow-hidden">
+            <img src="<%= event.image_url %>" alt="<%= event.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+          <div class="p-4">
+            <div class="flex items-center justify-between text-xs font-semibold text-orange-600 uppercase tracking-wide">
+              <span><%= event.category %></span>
+              <span><%= event.free? ? "Free" : "$#{'%.0f' % event.price}" %></span>
+            </div>
+            <h3 class="mt-2 font-bold text-gray-900 leading-snug"><%= event.title %></h3>
+            <p class="mt-1 text-sm text-gray-500"><%= event.starts_at.strftime("%a, %b %-d · %-l:%M %p") %></p>
+            <p class="mt-1 text-sm text-gray-400"><%= event.location %></p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-400">No events yet — run <code class="bg-gray-100 px-1 rounded">bin/rails db:seed</code> to add some.</p>
+  <% end %>
+</section>

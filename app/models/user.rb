@@ -1,11 +1,11 @@
 class User < ApplicationRecord
-  has_secure_password
-  has_many :sessions, dependent: :destroy
-  has_many :events, dependent: :destroy
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
 
-  enum :role, { attendee: 0, organizer: 1 }
-
-  normalizes :email_address, with: ->(e) { e.strip.downcase }
+  has_many :user_events, dependent: :destroy
+  has_many :events, through: :user_events
 
   validates :name, presence: true
 end

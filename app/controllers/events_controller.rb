@@ -1,11 +1,9 @@
 class EventsController < ApplicationController
-  allow_unauthenticated_access only: %i[index show]
-  before_action :require_organizer, only: %i[new create edit update destroy]
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_event, only: %i[show edit update destroy]
-  before_action :require_owner, only: %i[edit update destroy]
 
   def index
-    @events = Event.order(:starts_at)
+    @events = Event.order(:started_at)
   end
 
   def show
@@ -16,9 +14,10 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Current.user.events.build(event_params)
+    @event = Event.new(event_params)
 
     if @event.save
+      @event.user_events.create!(user: current_user, is_organizer: "true")
       redirect_to @event, notice: "Event created."
     else
       render :new, status: :unprocessable_entity
@@ -47,14 +46,6 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.expect(event: [:title, :description, :location, :starts_at, :category, :price, :image_url])
-    end
-
-    def require_organizer
-      redirect_to events_path, alert: "Only organizers can do that." unless Current.user&.organizer?
-    end
-
-    def require_owner
-      redirect_to events_path, alert: "You can only manage your own events." unless @event.user == Current.user
+      params.expect(event: [:name, :description, :location, :started_at, :ended_at, :category, :price, :image_url])
     end
 end

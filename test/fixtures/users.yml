@@ -1,9 +1,15 @@
-<% password_digest = BCrypt::Password.create("password") %>
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% encrypted_password = BCrypt::Password.create("password") %>
 
 one:
-  email_address: one@example.com
-  password_digest: <%= password_digest %>
+  name: MyString
+  phone: MyString
+  email: one@example.com
+  encrypted_password: <%= encrypted_password %>
 
 two:
-  email_address: two@example.com
-  password_digest: <%= password_digest %>
+  name: MyString
+  phone: MyString
+  email: two@example.com
+  encrypted_password: <%= encrypted_password %>

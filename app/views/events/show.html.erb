@@ -1,10 +1,10 @@
-<% content_for :title, "#{@event.title} — eventa" %>
+<% content_for :title, "#{@event.name} — eventa" %>
 
 <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
   <div class="flex items-center justify-between">
     <%= link_to "← Back to all events", events_path, class: "text-sm text-gray-500 hover:text-gray-900" %>
 
-    <% if authenticated? && @event.user == Current.user %>
+    <% if user_signed_in? %>
       <div class="flex items-center gap-4 text-sm">
         <%= link_to "Edit", edit_event_path(@event), class: "text-gray-500 hover:text-gray-900" %>
         <%= button_to "Delete", event_path(@event), method: :delete, class: "text-red-500 hover:text-red-700 bg-transparent border-0 p-0 cursor-pointer", form: { data: { turbo_confirm: "Delete this event?" } } %>
@@ -14,7 +14,7 @@
 
   <div class="mt-4 rounded-xl overflow-hidden border border-gray-200 bg-white">
     <div class="aspect-[16/7] bg-gray-100 overflow-hidden">
-      <img src="<%= @event.image_url %>" alt="<%= @event.title %>" class="w-full h-full object-cover">
+      <img src="<%= @event.image_url %>" alt="<%= @event.name %>" class="w-full h-full object-cover">
     </div>
 
     <div class="p-6 sm:p-8">
@@ -22,20 +22,26 @@
         <span><%= @event.category %></span>
       </div>
 
-      <h1 class="mt-2 text-3xl font-extrabold text-gray-900"><%= @event.title %></h1>
+      <h1 class="mt-2 text-3xl font-extrabold text-gray-900"><%= @event.name %></h1>
+
+      <% if @event.organizer %>
+        <p class="mt-1 text-sm text-gray-400">Hosted by <%= @event.organizer.name %></p>
+      <% end %>
 
       <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         <div class="flex items-start gap-3">
           <span class="text-gray-400">📅</span>
           <div>
-            <p class="font-semibold text-gray-900"><%= @event.starts_at.strftime("%A, %B %-d, %Y") %></p>
-            <p class="text-gray-500"><%= @event.starts_at.strftime("%-l:%M %p") %></p>
+            <p class="font-semibold text-gray-900"><%= @event.started_at.strftime("%A, %B %-d, %Y") %></p>
+            <p class="text-gray-500">
+              <%= @event.started_at.strftime("%-l:%M %p") %><% if @event.ended_at %> – <%= @event.ended_at.strftime("%-l:%M %p") %><% end %>
+            </p>
           </div>
         </div>
         <div class="flex items-start gap-3">
           <span class="text-gray-400">📍</span>
           <div>
-            <p class="font-semibold text-gray-900"><%= @event.location %></p>
+            <p class="font-semibold text-gray-900"><%= @event.location.presence || "TBD" %></p>
           </div>
         </div>
       </div>

@@ -37,6 +37,15 @@ Rails.application.configure do
   # No SMTP configured locally — just capture emails instead of attempting to send them.
   config.action_mailer.delivery_method = :test
 
+  # Log the body of every outgoing email (e.g. Devise password reset links) since
+  # there's no SMTP server locally to actually deliver them.
+  config.after_initialize do
+    ActiveSupport::Notifications.subscribe("deliver.action_mailer") do |*args|
+      event = ActiveSupport::Notifications::Event.new(*args)
+      Rails.logger.info "[mailer] To: #{event.payload[:to]}\n#{event.payload[:body]}"
+    end
+  end
+
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 

@@ -10,8 +10,8 @@
 
 <%= form_with model: event, class: "space-y-4" do |form| %>
   <div>
-    <%= form.label :title, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.text_field :title, required: true, autofocus: true, placeholder: "Sunrise Yoga in the Park", class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+    <%= form.label :name, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.text_field :name, required: true, autofocus: true, placeholder: "Sunrise Yoga in the Park", class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
   </div>
 
   <div>
@@ -22,7 +22,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div>
       <%= form.label :location, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.text_field :location, required: true, placeholder: "Portland, OR", class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+      <%= form.text_field :location, placeholder: "Portland, OR", class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
     </div>
     <div>
       <%= form.label :category, class: "block text-sm font-medium text-gray-700 mb-1" %>
@@ -32,18 +32,24 @@
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div>
-      <%= form.label :starts_at, "Date & time", class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.datetime_field :starts_at, required: true, class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+      <%= form.label :started_at, "Starts", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.datetime_field :started_at, required: true, class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
     </div>
+    <div>
+      <%= form.label :ended_at, "Ends", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.datetime_field :ended_at, class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div>
       <%= form.label :price, "Price (USD, 0 for free)", class: "block text-sm font-medium text-gray-700 mb-1" %>
       <%= form.number_field :price, step: "0.01", min: 0, placeholder: "0", class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
     </div>
-  </div>
-
-  <div>
-    <%= form.label :image_url, "Image URL", class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.text_field :image_url, placeholder: "https://...", class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+    <div>
+      <%= form.label :image_url, "Image URL", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.text_field :image_url, placeholder: "https://...", class: "w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+    </div>
   </div>
 
   <div class="flex items-center gap-3 pt-2">
